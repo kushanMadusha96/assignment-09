@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>17 Timers js</title>
+
+    <style>
+
+        #divs {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        div {
+            background-color: #7db9e8;
+            width: 100px;
+            height: 50px;
+            margin-right: 1px;
+        }
+        button:first-child {
+            position: absolute;
+            width: 80px;
+            height: 50px;
+            margin-left: 670px;
+            bottom: 250px;
+        }
+        button:nth-child(2) {
+            position: absolute;
+            width: 80px;
+            height: 50px;
+            margin-left: 770px;
+            bottom: 250px;
+        }
+    </style>
+</head>
+<body>
+
+<section id="main">
+    <section id="divs">
+        <div class="light"></div>
+        <div class="light"></div>
+        <div class="light"></div>
+        <div class="light"></div>
+        <div class="light"></div>
+        <div class="light"></div>
+    </section>
+
+    <section id="btns">
+        <button>start</button>
+        <button>stop</button>
+    </section>
+    <audio src="audio.mp3" id="aud"></audio>
+</section>
+
+<script src="lib/jquary.min.js"></script>
+
+<script>
+    var current_light = -1;
+    var current_direction = "RIGHT";
+    var light_count = 6;
+    var intervalID = null;
+
+    var style = {
+        background : "white",
+        border :" 1px solid red"
+    }
+
+    const lightPannel = () => {
+        $(".light").css(style);
+
+        if( "RIGHT" === current_direction) {
+            current_light++;
+            $(".light").eq(current_light).css("background", "red");
+
+            if( current_light -1  >= 0) {
+                $(".light").eq(current_light - 1).css("background", "yellow");
+            }
+
+            if( current_light === light_count - 1) {
+                current_direction = "LEFT";
+            }
+        }
+        else {
+            current_light--;
+            $(".light").eq(current_light).css("background", "red");
+            $(".light").eq(current_light +1).css("background", "yellow");
+            if( current_light === 0) {
+                current_direction = "RIGHT";
+            }
+        }
+    }
+    $("button:first-child").on("click", () => {
+        if(intervalID == null) {
+            intervalID = setInterval(lightPannel, 100);
+            $("#aud")[0].play();
+        }
+    });
+    $("button:nth-child(2)").on("click", () => {
+        clearInterval(intervalID);
+        $("#aud")[0].pause();
+        intervalID = null;
+    })
+</script>
+</body>
+</html>
